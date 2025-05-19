@@ -3,7 +3,7 @@ TOOLS INI TERBUKA HANYA SEBAGAI EDUKASI, JANGAN DISALAH GUNAKAN
 apt update && apt upgrade
 apt install python
 apt install git
-https://github.com/Twinlion24434/TL-DdoS.git
+git clone https://github.com/Twinlion24434/TL-DdoS.git
 apt install dnsutils
 nslookup example.com
 
